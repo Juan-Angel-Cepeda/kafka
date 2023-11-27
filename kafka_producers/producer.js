@@ -9,9 +9,6 @@ const makeRequestAllFligths = async () => {
         const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number&flag=MX`);
         const flights = [];
         
-        console.log(Array.isArray(response.data.response));
-        await new Promise(resolve=>setTimeout(resolve, 500));
-
         response.data.response.forEach(item => {
             console.log(item);
             flights.push({
