@@ -38,19 +38,16 @@ const makeRequestAllFligths = async () => {
         console.log(err);
     }
 }
+
 let time = 1;
-const temporizador = async () =>{
+const tempo = async () => {
     console.log(time);
-    if(time >= 15){
+    if(time >= 30){
         time = 0;
     }
-    time ++;
-}
-console.log('iniciando');
-makeRequestAllFligths();
+    time++;
+};
 
-
-/*
-    kafka-topics --create --topic mi-topic --partitions 1 
-    -- replication-factor 1 --bootstrap-server localhost:9091
-*/
+console.log('Iniciando envio de informacion');
+setInterval(makeRequestAllFligths, 30000);
+setInterval(tempo, 1000);

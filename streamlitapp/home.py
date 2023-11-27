@@ -1,19 +1,12 @@
 import streamlit as st
 import consumer as cs
 
+consumer = cs.Consumer('mi-topic')
+message = consumer.consume()
+
 st.title('Fligth Tracker with Kafka')
+st.write(message)
 
 
-lat = "20.919937"
-lon = "-99.11438"
+#st.map(consumer.consume(),latitude="lat",longitude="lng",zoom=4)
 
-fligth_info = {
-    "flight_id": "AMX123",
-    "airline": "Aeromexico",
-    "origin": "MEX",
-    "destination": "MTY",
-    "latitude": "20.919937",
-    "longitude": "-99.11438"
-}
-
-st.map(fligth_info,zoom=15)
