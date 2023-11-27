@@ -7,11 +7,14 @@ const makeRequestAllFligths = async () => {
         const producer = kafka.producer();
         await producer.connect();
         const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number&flag=MX`);
-        const fligths = [];
+        const flights = [];
         
-        response.data.response.forEach((item) => {
+        console.log(Array.isArray(response.data.response));
+        await new Promise(resolve=>setTimeout(resolve, 500));
+
+        response.data.response.forEach(item => {
             console.log(item);
-            fligths.push({
+            flights.push({
                 lat: item.lat,
                 lng: item.lng,
                 dir: item.dir,
@@ -26,7 +29,7 @@ const makeRequestAllFligths = async () => {
         await producer.send({
             topic:'mi-topic',
             messages:[
-                {value:JSON.stringify(fligths)},
+                {value:JSON.stringify(flights)},
             ],
         });
         
