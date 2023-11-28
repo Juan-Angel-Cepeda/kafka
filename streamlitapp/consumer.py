@@ -1,6 +1,5 @@
 import json
 import pandas as pd
-import time
 from kafka import KafkaConsumer
 
 class Consumer:
@@ -17,14 +16,22 @@ class Consumer:
         try:
             for message in self.consumer:
                 flights = message.value
-                df = pd.DataFrame(flights)  
+                df = pd.DataFrame(flights)
                 yield df
             self.consumer.close()
         except Exception as e:
             print(e)
             self.consumer.close()
 
-aviones = Consumer('mi-topic')            
-for dataframe in aviones.consume():
-    time.sleep(5)
-    print(dataframe)
+def got_data():
+    dataFrame = Consumer('mi-topic')
+    data = None
+    for df in dataFrame.consume():
+        data = df
+        dataFrame.consumer.close()
+        break
+    return data
+
+
+#kafka-topics --create --topic vuelos --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+

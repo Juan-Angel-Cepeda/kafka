@@ -1,12 +1,22 @@
 import streamlit as st
 import consumer as cs
+import folium
 
-consumer = cs.Consumer('mi-topic')
-message = consumer.consume()
+st.title('Fight Tracker')
+map_button = st.button('Map')
 
-st.title('Fligth Tracker with Kafka')
-st.write(message)
+if map_button:
+    dataframe = cs.got_data()
+    st.map(dataframe,latitude=dataframe['lat'].mean(),longitude=dataframe['lon'].mean(),zoom=4)
 
 
-#st.map(consumer.consume(),latitude="lat",longitude="lng",zoom=4)
+"""
+if map_button:
+    consumer = cs.Consumer('mi-topic')
+    for df in consumer.consume():
+        mymap = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=4)
+        for _, row in df.iterrows():
+            folium.Marker([row['lat'], row['lon']], popup=row['flight']).add_to(mymap)
 
+        map_placeholder.map(mymap)
+"""

@@ -13,7 +13,7 @@ const makeRequestAllFligths = async () => {
             console.log(item);
             flights.push({
                 lat: item.lat,
-                lng: item.lng,
+                lon: item.lng,
                 dir: item.dir,
                 alt: item.alt,
                 flag: item.flag,
