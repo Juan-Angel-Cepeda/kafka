@@ -1,13 +1,16 @@
 import streamlit as st
 import consumer as cs
-import folium
+import time 
 
-st.title('Fight Tracker')
+
+st.title('Fight Tracker México')
+st.markdown('### Muestra todos los vuelos mexicanos activos en tiempo real')
 map_button = st.button('Map')
+
 
 if map_button:
     dataframe = cs.got_data()
-    st.map(dataframe,latitude=dataframe['lat'].mean(),longitude=dataframe['lon'].mean(),zoom=4)
+    st.map(dataframe,latitude=dataframe['lat'].mean(),longitude=dataframe['lon'].mean())
 
 
 """
