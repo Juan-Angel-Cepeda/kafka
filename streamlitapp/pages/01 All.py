@@ -17,7 +17,7 @@ st.map(st.session_state.dataframe,latitude=st.session_state.dataframe['lat'].mea
 st.dataframe(st.session_state.dataframe)
 
 while True:
-    time.sleep(60)
+    time.sleep(15)
     st.rerun()
     
         
