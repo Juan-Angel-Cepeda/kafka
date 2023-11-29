@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const makeRequestAllFligths = async () => {
     try{
+        
         const producer = kafka.producer();
         await producer.connect();
         const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number,dep_iata,arr_iata,status&flag=MX`);
@@ -52,5 +53,5 @@ const tempo = async () => {
 };
 
 console.log('Iniciando envio de informacion');
-setInterval(makeRequestAllFligths, 15000);
+setInterval(makeRequestAllFligths, 60000);
 setInterval(tempo, 1000);
