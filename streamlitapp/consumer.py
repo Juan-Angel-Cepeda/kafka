@@ -16,21 +16,20 @@ class Consumer:
         try:
             for message in self.consumer:
                 flights = message.value
-                df = pd.DataFrame(flights)
-                yield df
+                yield flights
             self.consumer.close()
         except Exception as e:
             print(e)
             self.consumer.close()
 
 def got_data():
-    dataFrame = Consumer('mi-topic')
-    data = None
-    for df in dataFrame.consume():
-        data = df
-        dataFrame.consumer.close()
+    consumeFligths = Consumer('vuelos')
+    dataFrame = None
+    for message in consumeFligths.consume():
+        dataFrame = pd.DataFrame(message)
+        consumeFligths.consumer.close()
         break
-    return data
+    return dataFrame
 
 
 #kafka-topics --create --topic vuelos --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092

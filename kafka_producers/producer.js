@@ -7,9 +7,10 @@ const makeRequestAllFligths = async () => {
         
         const producer = kafka.producer();
         await producer.connect();
+        console.log('Conectado al servidor de kafka');
         const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number,dep_iata,arr_iata,status&flag=MX`);
         const flights = [];
-        
+        console.log('Enviando informacion a Kafka')
         response.data.response.forEach(item => {
             console.log(item);
             flights.push({
@@ -28,7 +29,7 @@ const makeRequestAllFligths = async () => {
         });
         
         await producer.send({
-            topic:'mi-topic',
+            topic:'vuelos',
             messages:[
                 {value:JSON.stringify(flights)},
             ],
@@ -43,15 +44,5 @@ const makeRequestAllFligths = async () => {
     }
 }
 
-let time = 1;
-const tempo = async () => {
-    console.log(time);
-    if(time >= 30){
-        time = 0;
-    }
-    time++;
-};
-
-console.log('Iniciando envio de informacion');
+console.log('Iniciando servicio de kafka');
 setInterval(makeRequestAllFligths, 60000);
-setInterval(tempo, 1000);
