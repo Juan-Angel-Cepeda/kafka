@@ -1,48 +1,27 @@
 import streamlit as st
-import consumer as cs
-import time
+from PIL import Image
 
+st.set_page_config(
+    page_title="Vuelos",
+    page_icon="",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
+fing = Image.open('./images/ingenieria.png')
+uach = Image.open('./images/uach.png')
 
-st.title('Fight Tracker México')
-st.markdown('### Muestra todos los vuelos mexicanos activos en tiempo real')
+col1, col2, col3 = st.columns(3)    
+with col1:
+    st.image(fing,width=100)
+with col3:
+    st.image(uach,width=100)
 
-if 'dataframe' not in st.session_state:
-    st.session_state.dataframe = cs.got_data()
+with col2:
+    st.markdown("# Tracker de Vuelos 🛫")
+    st.markdown("### Computo paralelo y distribuido")
+    st.markdown("#### Juan Angel Cepeda Fernandez")
+    st.markdown("#### Manuel Alfonso Balderrama Chaparro")
+    st.markdown("#### Miguel Alan Quintana Montaño")
 
-if 'selected_flight_data' not in st.session_state:
-    st.session_state.selected_flight_data = None
-
-if 'flight_numbers' not in st.session_state:
-    st.session_state.flight_numbers = None
-
-if 'selected_flight_number' not in st.session_state:
-    st.session_state.selected_flight_number = None
-
-generalMap = st.container()
-flightMap = st.container()
-
-with generalMap:
-    map_button = st.button('Map')
-    if map_button:
-        st.session_state.dataframe = cs.got_data()
-        st.map(st.session_state.dataframe,latitude=st.session_state.dataframe['lat'].mean(),longitude=st.session_state.dataframe['lon'].mean())
-        st.dataframe(st.session_state.dataframe)
- 
- 
-with flightMap:
-    go = False
-    vuelo_button = st.button('Vamos a buscar un vuelo')
-    if vuelo_button:
-        st.markdown('Selecciona un numero de vueelo')
-        st.session_state.dataframe = cs.got_data()
-        st.session_state.flight_numbers = st.session_state.dataframe['flight_number'].unique()
-        st.session_state.selected_flight_number = st.selectbox('Numero de vuelo', st.session_state.flight_numbers)
-        go = st.button('Buscar')
-    
-    if go:
-        st.session_state.selected_flight_data = st.session_state.dataframe[st.session_state.dataframe['flight_number'] == st.session_state.selected_flight_number]
-        st.write('Datos del vuelo seleccionado')
-        st.write(st.session_state.selected_flight_data)
-        st.map(st.session_state.selected_flight_data,latitude=st.session_state.selected_flight_data['lat'].mean(),longitude=st.session_state.selected_flight_data['lon'].mean())
-
+    st.markdown("_Nota: Las pestañas se encuentran en un sidebar._")
