@@ -6,20 +6,23 @@ const makeRequestAllFligths = async () => {
     try{
         const producer = kafka.producer();
         await producer.connect();
-        const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number&flag=MX`);
+        const response = await axios.get(`https://airlabs.co/api/v9/flights?api_key=${process.env.API_KEY}&_fields=lat,lng,dir,alt,flag,airline_iata,aircraft_icao,flight_number,dep_iata,arr_iata,status&flag=MX`);
         const flights = [];
         
         response.data.response.forEach(item => {
             console.log(item);
             flights.push({
+                flight_number: item.flight_number,
+                airline_iata: item.airline_iata,
+                status: item.status,
                 lat: item.lat,
                 lon: item.lng,
                 dir: item.dir,
                 alt: item.alt,
                 flag: item.flag,
-                airline_iata: item.airline_iata,
                 aircraft_icao: item.aircraft_icao,
-                flight_number: item.flight_number
+                dep_iata: item.dep_iata,
+                arr_iata: item.arr_iata,
             });
         });
         
@@ -49,5 +52,5 @@ const tempo = async () => {
 };
 
 console.log('Iniciando envio de informacion');
-setInterval(makeRequestAllFligths, 30000);
+setInterval(makeRequestAllFligths, 15000);
 setInterval(tempo, 1000);
