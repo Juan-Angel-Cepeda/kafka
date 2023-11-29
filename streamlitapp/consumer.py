@@ -1,16 +1,18 @@
 import json
 import pandas as pd
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, TopicPartition
 
 class Consumer:
-    def __init__(self, topic):
+    def __init__(self, topic,partition):
+        partition_info = TopicPartition(topic, partition)
         self.consumer = KafkaConsumer(
-            topic,
             bootstrap_servers=['localhost:9092'],
             auto_offset_reset='earliest',
             enable_auto_commit=True,
             group_id='my-group',
             value_deserializer=lambda x: json.loads(x.decode('utf-8')))
+        
+        self.consumer.assign([partition_info])
 
     def consume(self):
         try:
@@ -22,8 +24,8 @@ class Consumer:
             print(e)
             self.consumer.close()
 
-def got_data():
-    consumeFligths = Consumer('vuelos')
+def got_data(part):
+    consumeFligths = Consumer('vuelos',partition=part)
     dataFrame = None
     for message in consumeFligths.consume():
         dataFrame = pd.DataFrame(message)
