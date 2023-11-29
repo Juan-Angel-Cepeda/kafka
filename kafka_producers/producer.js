@@ -28,13 +28,15 @@ const makeRequestAllFligths = async () => {
             });
         });
         
-        await producer.send({
-            topic:'vuelos',
-            messages:[
-                {value:JSON.stringify(flights)},
-            ],
-        });
-        
+        for (let partition=0;partition<3;partition++){
+            await producer.send({
+                topic:'vuelos',
+                messages:[
+                    {value:JSON.stringify(flights)},
+                ],
+                partition:partition
+            });
+        }
         console.log('Informacion enviada');
         await producer.disconnect();   
     
@@ -45,4 +47,4 @@ const makeRequestAllFligths = async () => {
 }
 
 console.log('Iniciando servicio de kafka');
-setInterval(makeRequestAllFligths, 60000);
+setInterval(makeRequestAllFligths, 15000);

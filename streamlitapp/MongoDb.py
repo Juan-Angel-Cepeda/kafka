@@ -1,23 +1,22 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import json
 import consumer as cs
+from datetime import datetime
 
 uri = "mongodb://localhost:27017"
-consumer = cs.Consumer('vuelos')
+consumer = cs.Consumer('vuelos',partition=0)
 
 try:
     connection = MongoClient(uri, server_api=ServerApi(version='1'))
     vuelos_db = connection.vuelos_db
     vuelos_col = vuelos_db.vuelos
 
-    for message in consumer.consume():
-        message = json.loads(message)
-        print(message)
-        #for document in message:
-        #    document = str(document)
-        #    vuelos_col.insert_one(document)
-            
+    for flights in consumer.consume():
+        for flight in flights:
+            flight['timestamp'] = datetime.utcnow()
+            vuelos_col.insert_one(flight)
+            print("Guradado en MongoDB")
+    
     connection.close()
     
 except Exception as e:
