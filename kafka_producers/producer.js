@@ -47,4 +47,4 @@ const makeRequestAllFligths = async () => {
 }
 
 console.log('Iniciando servicio de kafka');
-setInterval(makeRequestAllFligths, 15000);
+setInterval(makeRequestAllFligths, 60000);
