@@ -3,7 +3,7 @@ import pandas as pd
 from kafka import KafkaConsumer, TopicPartition
 
 class Consumer:
-    def __init__(self, topic,partition):
+    def __init__(self, topic, partition):
         partition_info = TopicPartition(topic, partition)
         self.consumer = KafkaConsumer(
             bootstrap_servers=['localhost:9092'],
@@ -33,6 +33,5 @@ def got_data(part):
         break
     return dataFrame
 
-
-#kafka-topics --create --topic vuelos --partitions 1 --replication-factor 1 --bootstrap-server localhost:9092
+#kafka-topics.sh --create --topic vuelos --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
 
